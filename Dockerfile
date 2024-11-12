@@ -3,6 +3,8 @@ FROM --platform=${BUILDPLATFORM} node:20-alpine
 FROM node:20-alpine AS base
 
 RUN addgroup -S promptfoo && adduser -S promptfoo -G promptfoo
+# Create directory for custom providers
+RUN mkdir -p /opt/promptfoo/providers && chown -R promptfoo:promptfoo /opt/promptfoo
 
 # Install dependencies only when needed
 FROM base AS builder
@@ -36,6 +38,7 @@ FROM base AS server
 WORKDIR /app
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
+COPY custom-dib-provider.js /opt/promptfoo/providers/custom-dib-provider.js
 
 # Make Python version configurable with a default of 3.12
 ARG PYTHON_VERSION=3.12
