@@ -35,6 +35,8 @@ export default defineConfig({
   build: {
     emptyOutDir: true,
     outDir: '../../dist/src/app',
+    sourcemap: true,
+    minify: false,
   },
   test: {
     environment: 'jsdom',

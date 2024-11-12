@@ -10,6 +10,17 @@ import { useProvidersStore } from '../../../store/providersStore';
 import AddLocalProviderDialog from './AddLocalProviderDialog';
 import ProviderConfigDialog from './ProviderConfigDialog';
 
+const dibProviders: ProviderOptions[] = ['dib:chat', 'dib:sources'].map((id) => ({
+  id,
+  config: {
+    temperature: 0.7,
+    max_tokens: 1500,
+    top_p: 0.95,
+    frequency_penalty: 0.0,
+    presence_penalty: 0.0,
+  },
+}));
+
 const defaultProviders: ProviderOptions[] = ([] as (ProviderOptions & { id: string })[])
   .concat(
     [
@@ -177,6 +188,7 @@ const PREFIX_TO_PROVIDER: Record<string, string> = {
   azureopenai: 'Azure',
   openai: 'OpenAI',
   replicate: 'Replicate',
+  dib: 'DIB AI',
 };
 
 function getGroupName(label?: string) {
@@ -203,7 +215,7 @@ const ProviderSelector: React.FC<ProviderSelectorProps> = ({ providers, onChange
   };
 
   const allProviders = React.useMemo(() => {
-    return [...defaultProviders, ...customProviders];
+    return [...dibProviders, ...defaultProviders, ...customProviders];
   }, [customProviders]);
 
   const handleProviderClick = (provider: ProviderOptions | string) => {

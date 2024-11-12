@@ -24,6 +24,7 @@ import { AwsBedrockCompletionProvider, AwsBedrockEmbeddingProvider } from './pro
 import { BrowserProvider } from './providers/browser';
 import * as CloudflareAiProviders from './providers/cloudflare-ai';
 import { CohereChatCompletionProvider, CohereEmbeddingProvider } from './providers/cohere';
+import { DibProvider } from './providers/dib';
 import { FalImageGenerationProvider } from './providers/fal';
 import { GolangProvider } from './providers/golangCompletion';
 import { GroqProvider } from './providers/groq';
@@ -503,6 +504,10 @@ export async function loadApiProvider(
 
     const CustomApiProvider = await importModule(modulePath);
     ret = new CustomApiProvider(options);
+  } else if (providerPath.startsWith('dib:')) {
+    const splits = providerPath.split(':');
+    const modelName = splits.slice(1).join(':');
+    ret = new DibProvider(modelName || 'unknown', providerOptions);
   } else {
     logger.error(dedent`
       Could not identify provider: ${chalk.bold(providerPath)}.
@@ -629,4 +634,5 @@ export default {
   WebSocketProvider,
   loadApiProvider,
   WatsonXProvider,
+  DibProvider,
 };
