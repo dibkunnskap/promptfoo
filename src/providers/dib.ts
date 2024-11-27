@@ -47,16 +47,10 @@ export class DibProvider implements ApiProvider {
     const messages = [{ role: 'user', content: prompt }];
 
     const body = {
-      model: 'gpt-4o',
-      promptId: '3cc2c3a9-1330-4522-a563-f257538dbaac',
+      system: {
+        name: 'Kontohjelp',
+      },
       messages,
-      temperature: this.config?.temperature ?? 0.7,
-      max_tokens: this.config?.max_tokens ?? 1500,
-      top_p: this.config?.top_p ?? 0.95,
-      frequency_penalty: this.config?.frequency_penalty ?? 0,
-      presence_penalty: this.config?.presence_penalty ?? 0,
-      stop: this.config?.stop ?? 'None',
-      stream: false,
     };
 
     let response;
@@ -67,7 +61,6 @@ export class DibProvider implements ApiProvider {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            /* OPENAI_API_KEY: getEnvString('OPENAI_API_KEY'), */
             // @ts-expect-error
             'X-API-KEY': getEnvString('DIB_API_KEY'),
           },
